@@ -30,6 +30,7 @@ FROM(
       WHERE source = "cloud_build"
       AND JSON_EXTRACT_SCALAR(metadata, '$.status') = "SUCCESS"
       AND JSON_EXTRACT_SCALAR(metadata, '$.substitutions.BRANCH_NAME') IN ('master', 'main')
+      AND JSON_EXTRACT_SCALAR(metadata, '$.substitutions.REPO_NAME') NOT IN ('hrbrain-help')
       GROUP BY main_commit
     )
   ) deploys
