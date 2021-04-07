@@ -15,7 +15,8 @@ JSON_EXTRACT_SCALAR(metadata, '$.issue.closed_at') as time_resolved,
 REGEXP_EXTRACT(metadata, r"root cause: ([[:alnum:]]*)") as root_cause,
 REGEXP_CONTAINS(JSON_EXTRACT(metadata, '$.issue.labels'), '"name":"Incident"') as bug,
 FROM four_keys.events_raw 
-WHERE event_type LIKE "issue%"
+WHERE event_type = "issues"
+AND JSON_EXTRACT_SCALAR(metadata, '$.action') = 'closed'
 )
 GROUP BY 1,2
 HAVING max(bug) is True
