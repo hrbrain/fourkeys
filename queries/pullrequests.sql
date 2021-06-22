@@ -8,7 +8,7 @@ LANGUAGE js AS """
 SELECT opened.id                 as id,
        opened.time_created       as opened_at,
        closed.time_created       as closed_at,
-       closed.assignee           as assignee,
+       push.author               as author,
        json2array(closed.labels) as labels,
        opened.first_commit       as first_commit_sha,
        push.time_created         as first_commit_at,
@@ -24,7 +24,6 @@ FROM (SELECT id,
          LEFT JOIN
      (SELECT id,
              time_created,
-             JSON_VALUE(metadata, '$.pull_request.assignee.login') as assignee,
              JSON_QUERY(metadata, '$.pull_request.labels')         as labels
       FROM `four_keys.events_raw`
       WHERE event_type = 'pull_request'
@@ -34,5 +33,6 @@ FROM (SELECT id,
      on closed.id = opened.id
          JOIN
      (SELECT id,
+             JSON_VALUE(metadata, '$.head_commit.author.name') as author,
              time_created
       FROM `four_keys.events_raw`) push on push.id = opened.first_commit
