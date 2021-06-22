@@ -1,8 +1,9 @@
 SELECT
-assignee,
+author,
 COUNT(*) as count
 FROM `hrb-fourkeys.four_keys.pullrequests`
-WHERE assignee IS NOT NULL
+WHERE author IS NOT NULL
+  AND author != 'hrb-machine'
   AND closed_at IS NOT NULL
   AND TIMESTAMP (DATE_SUB(CURRENT_DATE (), INTERVAL 1 MONTH)) < closed_at
-GROUP BY assignee
+GROUP BY author
