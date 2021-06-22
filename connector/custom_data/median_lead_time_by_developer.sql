@@ -12,5 +12,6 @@ FROM (
          FROM `hrb-fourkeys.four_keys.pullrequests`
          WHERE closed_at IS NOT NULL
            AND assignee IS NOT NULL
+           AND TIMESTAMP (DATE_SUB(CURRENT_DATE (), INTERVAL 1 MONTH)) < closed_at
      )
 GROUP BY assignee
