@@ -41,7 +41,7 @@ ON closed.id = opened.id AND opened.repo = closed.repo
     JOIN
     (SELECT DISTINCT time_created,
     id,
-    JSON_VALUE(metadata, '$.head_commit.author.name') as author
+    JSON_VALUE(metadata, '$.head_commit.author.username') as author
     FROM `four_keys.events_raw`
     WHERE event_type = 'push'
     AND source = 'github') push
